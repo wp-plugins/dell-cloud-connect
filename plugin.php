@@ -18,6 +18,7 @@ Installing
 define('DELL_CONNECT_DIVISION', 'cloudcomputing');
 define('DELL_CONNECT_PLUGIN_NAME', 'Dell Cloud Connect');
 define('DELL_CONNECT_SETTINGS_MENU_TITLE', 'Cloud Connect Setting');
+define('DELL_CONNECT_WIDGET_TITLE', 'The Latest From Cloud Computing');
 
 define('DELL_CONNECT_PLUGIN_URL',  WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)));
 define('DELL_CONNECT_PLUGIN_PATH', WP_CONTENT_DIR.'/plugins/'.plugin_basename(dirname(__FILE__)));
