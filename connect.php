@@ -1,66 +1,51 @@
 <?php
-/*
-Plugin Name: Dell Cloud Connect
-Plugin URI: http://marketing.dell.com/cloudcomputing-widget
-Description: Adds a widget to display the latest news and information from the most influential cloud computing blogs.
-Version: 0.2.0
-Author: Dell
-Author URI: http://www.dell.com
-
-
-Installing
-1. Copy cloud_connect folder to your plugins folder /wp-content/plugins/
-2. Activate it through the plugin management screen.
-3. Go to Appearance->Widgets and drag and drop the widget to wherever you want to show it.
-*/
-
 
 // Define Actions
 // ============================================
 
-register_activation_hook(__FILE__,'edu_connect_install');
-register_deactivation_hook(__FILE__, 'edu_connect_uninstall');
+register_activation_hook(__FILE__,'dell_connect_install');
+register_deactivation_hook(__FILE__, 'dell_connect_uninstall');
 
-add_action( 'wp_print_scripts', 'edu_connect_scripts' );
-add_action( 'wp_print_styles', 'edu_connect_styles' );
-add_action( 'widgets_init', 'edu_connect_load_widgets' );
-add_action( 'admin_menu', 'edu_connect_admin_menu' );
-add_action( 'wp_ajax_edu_connect_showlink', 'edu_connect_admin_ajax_showlink' );
+add_action( 'wp_print_scripts', 'dell_connect_scripts' );
+add_action( 'wp_print_styles', 'dell_connect_styles' );
+add_action( 'widgets_init', 'dell_connect_load_widgets' );
+add_action( 'admin_menu', 'dell_connect_admin_menu' );
+add_action( 'wp_ajax_edu_connect_showlink', 'dell_connect_admin_ajax_showlink' );
 //add_action( 'admin_notices', 'edu_connect_admin_notice' );
 
 // Define Constants
 // ============================================
 
 //Define Environment if not defined
-if(!defined('EDU_CONNECT_ENV')) {
-    define('EDU_CONNECT_ENV', 'production');
+if(!defined('DELL_CONNECT_ENV')) {
+    define('DELL_CONNECT_ENV', 'production');
 }
-define('EDU_PLUGIN_PATH', WP_CONTENT_DIR.'/plugins/'.plugin_basename(dirname(__FILE__)));
-define('EDU_PLUGIN_URL',  WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)));
-define('EDU_DIVISION', 'cloudcomputing');
+
+define('DELL_CONNECT_PLUGIN_URL',  WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)));
+
 
 //Define constants based on environment
-if(EDU_CONNECT_ENV == 'development') {
-    define('EDU_CONNECT_SERVICE_URL','http://11.0.0.1:9001');
+if(DELL_CONNECT_ENV == 'development') {
+    define('DELL_CONNECT_SERVICE_URL','http://11.0.0.1:9001');
 }
-elseif (EDU_CONNECT_ENV == 'staging') {
-    define('EDU_CONNECT_SERVICE_URL','http://staging.dell.system-11.com');
+elseif (DELL_CONNECT_ENV == 'staging') {
+    define('DELL_CONNECT_SERVICE_URL','http://staging.dell.system-11.com');
 }
 else {
-    define('EDU_CONNECT_SERVICE_URL','http://dell.system-11.com');
+    define('DELL_CONNECT_SERVICE_URL','http://dell.system-11.com');
 }
 
 /**
  * Register the widget
  */
-function edu_connect_load_widgets() {
+function dell_connect_load_widgets() {
     register_widget( 'Edu_Connect_Widget' );
 }
 
 /**
  * Plugin Install/Activation Script
  */
-function edu_connect_install() {
+function dell_connect_install() {
 
     //Check to make sure PHP config supports urls in file_get_contents
     if(!function_exists('file_get_contents') || ini_get('allow_url_fopen') == 0){
@@ -71,11 +56,11 @@ function edu_connect_install() {
     $clientId = get_option('edu_connect_clientid', null);
         
     //Set global default option
-    $settings = file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/add?division=' . EDU_DIVISION .'&url=' . urlencode(home_url()) . '&ajaxurl=' . urlencode(EDU_PLUGIN_URL . '/ajax.php') . '&clientid=' . $clientId);
+    $settings = file_get_contents(DELL_CONNECT_SERVICE_URL . '/client/add?division=' . DELL_CONNECT_DIVISION .'&url=' . urlencode(home_url()) . '&ajaxurl=' . urlencode(DELL_CONNECT_PLUGIN_URL . '/ajax.php') . '&clientid=' . $clientId);
     $settings = json_decode($settings);
 
     if(!$settings->result) {
-        file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/error?url=' . urlencode(home_url()) . '&error=' . urlencode($settings->error));
+        file_get_contents(DELL_CONNECT_SERVICE_URL . '/client/error?url=' . urlencode(home_url()) . '&error=' . urlencode($settings->error));
         die("Sorry, there was a problem activating your blog. Please contact support+dell@system-11.com");
     }
     else {
@@ -85,9 +70,9 @@ function edu_connect_install() {
     update_option('edu_connect_showlink', true);
 }
 
-function edu_connect_uninstall() {
+function dell_connect_uninstall() {
     $clientId = get_option('edu_connect_clientid', null);
-    $settings = file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/deactivate?clientid=' . $clientId);
+    $settings = file_get_contents(DELL_CONNECT_SERVICE_URL . '/client/deactivate?clientid=' . $clientId);
     $settings = json_decode($settings);
 }
 
@@ -107,7 +92,7 @@ class Edu_Connect_Widget extends WP_Widget {
     function Edu_Connect_Widget() {
         //Default data as constants
         
-        $this->url = EDU_CONNECT_SERVICE_URL . "/feed";
+        $this->url = DELL_CONNECT_SERVICE_URL . "/feed";
         //Set defaults
         $widget_ops = array();
         $widget_ops['title' ] = self::EDU_CONNECT_TITLE;
@@ -193,12 +178,12 @@ class Edu_Connect_Widget extends WP_Widget {
         </div>
         <script>
             var _dec = _dec || [];
-            <?php if(EDU_CONNECT_ENV == 'development' || EDU_CONNECT_ENV == 'staging'):?>
+            <?php if(DELL_CONNECT_ENV == 'development' || DELL_CONNECT_ENV == 'staging'):?>
             _dec.push(['enableDebug']);
             <?php endif; ?>
-            _dec.push(['setBaseUrl', '<?php echo EDU_CONNECT_SERVICE_URL ?>']);
+            _dec.push(['setBaseUrl', '<?php echo DELL_CONNECT_SERVICE_URL ?>']);
             _dec.push(['setClientId', '<?php echo get_option("edu_connect_clientid")?>']);
-            _dec.push(['setDivision', '<?php echo EDU_DIVISION ?>']);
+            _dec.push(['setDivision', '<?php echo DELL_CONNECT_DIVISION ?>']);
             _dec.push(['getFeed',<?php echo (int)$count_items; ?>,<?php echo (($show_descriptions)?'true':'false'); ?>]);
         </script>
 
@@ -208,22 +193,22 @@ class Edu_Connect_Widget extends WP_Widget {
 }
 
 
-function edu_connect_scripts() {
+function dell_connect_scripts() {
     if (!is_admin()) {
-        if(EDU_CONNECT_ENV == 'production') {
+        if(DELL_CONNECT_ENV == 'production') {
             wp_enqueue_script( $handle = 'edu_connect_ender', $src = 'https://s3.amazonaws.com/system11-dell/ender.min.js', array(), $ver = 1, $in_footer = false );
             wp_enqueue_script( $handle = 'edu_connect_js', $src = 'https://s3.amazonaws.com/system11-dell/dell.min.js', array(), $ver = 1, $in_footer = false );
         }
          else {
-            wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
-            wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
+            wp_enqueue_script( $handle = 'edu_connect_ender', $src = DELL_CONNECT_PLUGIN_URL . '/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
+            wp_enqueue_script( $handle = 'edu_connect_js', $src = DELL_CONNECT_PLUGIN_URL . '/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
         }
     }
 }
 
-function edu_connect_styles() {
+function dell_connect_styles() {
     if (!is_admin()) {
-        wp_enqueue_style( $handle = 'edu_connect_css', $src = WP_PLUGIN_URL . '/edu-connect/assets/css/styles.css', array(), $ver = 1 );
+        wp_enqueue_style( $handle = 'edu_connect_css', $src = DELL_CONNECT_PLUGIN_URL . '/edu-connect/assets/css/styles.css', array(), $ver = 1 );
     }
 }
 
@@ -235,28 +220,28 @@ function edu_connect_admin_notice() {
     }
 }
 
-function edu_connect_admin_menu() {
+function dell_connect_admin_menu() {
     //add_menu_page( 'Dell Services', 'Dell Services', 'manage_options', 'dell-services', null, WP_PLUGIN_URL . '/edu-connect/assets/img/dellecomicon.png', null );
     //$dell_news_page = add_submenu_page( 'dell-services', 'News', 'News', 'manage_options', 'dell-news', 'dell_admin_page' );
-    $edu_connect_page = add_options_page('Dell Cloud Connect', 'Dell Cloud Connect', 'manage_options', 'edu-connect', 'edu_connect_admin_page' );
+    $edu_connect_page = add_options_page('<?php echo DELL_CONNECT_PLUGIN_NAME ?>', '<?php echo DELL_CONNECT_PLUGIN_NAME ?>', 'manage_options', 'edu-connect', 'edu_connect_admin_page' );
     remove_submenu_page( 'dell-services', 'dell-services' );
 
     add_action('admin_print_styles-' . $edu_connect_page, 'edu_connect_admin_scripts');
 }
 
 function edu_connect_admin_scripts() {
-    wp_enqueue_style( $handle = 'edu_connect_admin_css', $src = WP_PLUGIN_URL . '/edu-connect/assets/css/admin-styles.css', array(), $ver = 1 );
+    wp_enqueue_style( $handle = 'edu_connect_admin_css', $src = DELL_CONNECT_PLUGIN_URL . '/assets/css/admin-styles.css', array(), $ver = 1 );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
-    wp_enqueue_script( $handle = 'edu_connect_plugins', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/plugins.js', array(), $ver = 1, $in_footer = false );
+    wp_enqueue_script( $handle = 'edu_connect_plugins', $src = DELL_CONNECT_PLUGIN_URL . '/assets/js/plugins.js', array(), $ver = 1, $in_footer = false );
     
-    if(EDU_CONNECT_ENV == 'production') {
+    if(DELL_CONNECT_ENV == 'production') {
         wp_enqueue_script( $handle = 'edu_connect_ender', $src = 'https://s3.amazonaws.com/system11-dell/ender.min.js', array(), $ver = 1, $in_footer = false );
             wp_enqueue_script( $handle = 'edu_connect_js', $src = 'https://s3.amazonaws.com/system11-dell/dell.min.js', array(), $ver = 1, $in_footer = false );
     }
     else {
-        wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
-        wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
+        wp_enqueue_script( $handle = 'edu_connect_ender', $src = DELL_CONNECT_PLUGIN_URL . '/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
+        wp_enqueue_script( $handle = 'edu_connect_js', $src = DELL_CONNECT_PLUGIN_URL . '/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
     }
    
 }
@@ -270,7 +255,7 @@ function edu_connect_admin_page() {
 ?>
 <div class="wrap">
 <div id="icon-options-general" class="icon32"><br></div>
-<h2>Dell Cloud Connect Settings</h2>
+<h2><?php echo DELL_CONNECT_PLUGIN_NAME ?></h2>
 <div id="tabs">
     <h2 class="nav-tab-wrapper">
     <ul>
@@ -288,12 +273,12 @@ function edu_connect_admin_page() {
         </div>
         <script>
             var _dec = _dec || [];
-            <?php if(EDU_CONNECT_ENV == 'development' || EDU_CONNECT_ENV == 'staging'):?>
+            <?php if(DELL_CONNECT_ENV == 'development' || DELL_CONNECT_ENV == 'staging'):?>
             _dec.push(['enableDebug']);
             <?php endif; ?>
-            _dec.push(['setBaseUrl', '<?php echo EDU_CONNECT_SERVICE_URL ?>']);
+            _dec.push(['setBaseUrl', '<?php echo DELL_CONNECT_SERVICE_URL ?>']);
             _dec.push(['setClientId', '<?php echo get_option("edu_connect_clientid")?>']);
-            _dec.push(['setDivision', '<?php echo EDU_DIVISION ?>']);
+            _dec.push(['setDivision', '<?php echo DELL_CONNECT_DIVISION ?>']);
             _dec.push(['getBlogList']);
         </script>
     </div>
@@ -326,7 +311,7 @@ function edu_connect_admin_page() {
 <?php
 }
 
-function edu_connect_admin_ajax_showlink() {
+function dell_connect_admin_ajax_showlink() {
     global $wpdb;
     $showSponsoredLink = isset($_POST['backlinkActive'])?true:false;
 
