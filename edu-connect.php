@@ -209,8 +209,8 @@ class Edu_Connect_Widget extends WP_Widget {
 function edu_connect_scripts() {
     if (!is_admin()) {
         if(EDU_CONNECT_ENV == 'production') {
-            wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.min.js', array(), $ver = 1, $in_footer = false );
-            wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.min.js', array(), $ver = 1, $in_footer = false );
+            wp_enqueue_script( $handle = 'edu_connect_ender', $src = 'https://s3.amazonaws.com/system11-dell/ender.min.js', array(), $ver = 1, $in_footer = false );
+            wp_enqueue_script( $handle = 'edu_connect_js', $src = 'https://s3.amazonaws.com/system11-dell/dell.min.js', array(), $ver = 1, $in_footer = false );
         }
          else {
             wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
@@ -249,8 +249,8 @@ function edu_connect_admin_scripts() {
     wp_enqueue_script( $handle = 'edu_connect_plugins', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/plugins.js', array(), $ver = 1, $in_footer = false );
     
     if(EDU_CONNECT_ENV == 'production') {
-        wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.min.js', array(), $ver = 1, $in_footer = false );
-        wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.min.js', array(), $ver = 1, $in_footer = false );
+        wp_enqueue_script( $handle = 'edu_connect_ender', $src = 'https://s3.amazonaws.com/system11-dell/ender.min.js', array(), $ver = 1, $in_footer = false );
+            wp_enqueue_script( $handle = 'edu_connect_js', $src = 'https://s3.amazonaws.com/system11-dell/dell.min.js', array(), $ver = 1, $in_footer = false );
     }
     else {
         wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.js', array(), $ver = 1, $in_footer = false );

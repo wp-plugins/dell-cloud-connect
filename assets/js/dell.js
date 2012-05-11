@@ -103,7 +103,7 @@ $.noConflict();
         if('undefined' != typeof blogs[i].currentArticle) {
           output += '<li><strong><a target="_blank" rel="nofollow" href="' + baseUrl + '/click?url=' + encodeURIComponent(blogs[i].currentArticle['link']) + '">' + blogs[i].currentArticle.title + '</a></strong><br>';
           if(showDescriptions) {
-            output += '<span class="dec-description">' + blogs[i].currentArticle.description + '</span><br>';
+            output += '<span class="dec-description">' + trimWords(blogs[i].currentArticle.description,30) + '...</span><br>';
           }
           output += '<span class="dec-posted-by">Posted by <a rel="nofollow" target="_blank" href="' + blogs[i]['url'] + '">' + blogs[i]['title'] + '</a></span></li>';
         }
@@ -288,6 +288,12 @@ $.noConflict();
       }
     }
     $.ajax(ajaxSettings);
+  }
+
+  function trimWords(theString, numWords) {
+    expString = theString.split(/\s+/,numWords);
+    theNewString=expString.join(" ");
+    return theNewString;
   }
 
   init();
