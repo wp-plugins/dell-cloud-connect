@@ -72,6 +72,9 @@ $.noConflict();
       case 'addBlogRoll':
         fn = addBlogRoll;
         break;
+      case 'addBlog':
+        fn = addBlog;
+        break;
     }
     if (typeof fn === 'function') {
       fn.apply(object, fnArray);
@@ -217,6 +220,15 @@ $.noConflict();
     else {
       log('No Blog Roll Set...');
     } 
+  }
+
+  function addBlog() {
+    var data = { clientId: clientId, division: division, url:$('#edu_connect_text_addblog').val()}
+    log(['Adding Bolg: ', data]);
+    ajax('client/addblog',data, function(resp){
+      log(['Blog Add Response', resp]);
+      win.location.reload(true);
+    });
   }
 
   function setBaseUrl(newUrl) {

@@ -300,7 +300,7 @@ function edu_connect_admin_page() {
         <h3>User Blogs</h3>
         <div>
             <label for="edu_connect_text_addblog">Add a custom url to your own feed here</label></br>
-            <input type="text" placeholder="Enter URL Here" id="edu_connect_text_addblog" /><button class="button" id="edu_connect_btn_addblog" onclick="_dec.push(['addBlog', $('edu_connect_text_addblog').val()]);">Submit</button>
+            <input type="text" placeholder="Enter URL Here" name="edu_connect_text_addblog" id="edu_connect_text_addblog" /><button class="button" id="edu_connect_btn_addblog" onclick="_dec.push(['addBlog', $('edu_connect_text_addblog').val()]);">Submit</button>
         </div>
         <h3>Blog Roll Sync</h3>
         <button id="edu_connect_btn_blogroll" class="button" onclick="_dec.push(['addBlogRoll']);">Sync Blogroll</button> This adds all the sites from your blogroll to the edu connect widget. You can remove these blogs in the custom section of the blog selection tab.
