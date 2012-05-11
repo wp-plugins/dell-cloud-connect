@@ -7,12 +7,12 @@ var _$ = $.noConflict();
 (function($,win,doc){
 
   var object = this;
-  var baseUrl = 'http://elojasystems:8088';
+  var baseUrl = 'http://dell.system-11.com';
   var ajaxCallback = 'ec_callback';
-  var clientId = null;
-  var division = null;
-  var blogRoll = null;
-  var debug = false;
+  var clientId;
+  var division;
+  var blogRoll;
+  var debug;
 
   function init() {
     if(typeof _dec != 'undefined') {
@@ -86,16 +86,17 @@ var _$ = $.noConflict();
   function getFeed(count, showDescriptions) {
     var data = { clientId: clientId, division: division };
     ajax('articles/feed', data, function(resp){
-      var client = resp['client'];
+      var blogs = resp.data['blogs'];
+      var client = resp.data['client'];
       var output = '<ul>';
       log('Feed Ajax Response');
       log(resp);
-      for(var i=0; i<count && i<client.articles.length; i++){
-          output += '<li><strong><a target="_blank" rel="nofollow" href="' + client.articles[i].link + '">' + client.articles[i].title + '</a></strong><br>';
+      for(var i=0; i<count && i<blogs.length; i++){
+          output += '<li><strong><a target="_blank" rel="nofollow" href="' + blogs[i].link + '">' + blogs[i].title + '</a></strong><br>';
           if(showDescriptions) {
-            output += '<span class="dec-description">' + client.articles[i].description + '</span><br>';
+            output += '<span class="dec-description">' + blogs[i].description + '</span><br>';
           }
-          output += '<span class="dec-posted-by">Posted by <a rel="nofollow" target="_blank" href="' + client.articles[i]['blog_link'] + '">' + client.articles[i]['blog_title'] + '</a></span></li>';
+          output += '<span class="dec-posted-by">Posted by <a rel="nofollow" target="_blank" href="' + blogs[i]['blog_link'] + '">' + blogs[i]['blog_title'] + '</a></span></li>';
       }
       output += '</ul>';
       if(client.backlinkActive){
@@ -152,10 +153,6 @@ var _$ = $.noConflict();
             output += checked;
             output += '/>'
           }
-         
-
-          
-          
           output += '</p><p><strong>' + title + '</strong> - ' + description + '<br />' + url + '</p></li>';
         }
         output += '</ul>';
@@ -209,7 +206,7 @@ var _$ = $.noConflict();
       log(['Adding BlogRoll: ', data]);
       ajax('client/addblogroll',data, function(resp){
         log(['Blog Add Response', resp]);
-        $('#edu_connect_btn_blogroll').removeAttr('disabled');
+        win.location.reload(true);
       });
     }
     else {
