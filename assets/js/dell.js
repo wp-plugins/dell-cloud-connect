@@ -1,7 +1,9 @@
+/*!
+ * Dell Blog Network Javascript
+ */
 
 //Return jQuery back to its owner if it exists
-var _$ = $.noConflict();
-
+$.noConflict();
 
 //First argument is ender, not jquery, FYI
 (function($,win,doc){
@@ -91,12 +93,15 @@ var _$ = $.noConflict();
       var output = '<ul>';
       log('Feed Ajax Response');
       log(resp);
-      for(var i=0; i<count && i<blogs.length; i++){
-          output += '<li><strong><a target="_blank" rel="nofollow" href="' + blogs[i].link + '">' + blogs[i].title + '</a></strong><br>';
+      for(var i=0; i<count && i<blogs.length; i++) {
+        if('undefined' != typeof blogs[i].currentArticle) {
+          output += '<li><strong><a target="_blank" rel="nofollow" href="' + blogs[i].currentArticle['link'] + '">' + blogs[i].currentArticle.title + '</a></strong><br>';
           if(showDescriptions) {
-            output += '<span class="dec-description">' + blogs[i].description + '</span><br>';
+            output += '<span class="dec-description">' + blogs[i].currentArticle.description + '</span><br>';
           }
-          output += '<span class="dec-posted-by">Posted by <a rel="nofollow" target="_blank" href="' + blogs[i]['blog_link'] + '">' + blogs[i]['blog_title'] + '</a></span></li>';
+          output += '<span class="dec-posted-by">Posted by <a rel="nofollow" target="_blank" href="' + blogs[i]['url'] + '">' + blogs[i]['title'] + '</a></span></li>';
+        }
+          
       }
       output += '</ul>';
       if(client.backlinkActive){
@@ -254,4 +259,4 @@ var _$ = $.noConflict();
 
   init();
 
-})(_$,window,document);
+})(ender,window,document);

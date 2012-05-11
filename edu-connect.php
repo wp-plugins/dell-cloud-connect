@@ -15,7 +15,9 @@ Installing
 */
 
 
-//Define Actions
+// Define Actions
+// ============================================
+
 register_activation_hook(__FILE__,'edu_connect_install');
 register_deactivation_hook(__FILE__, 'edu_connect_uninstall');
 
@@ -26,16 +28,22 @@ add_action( 'admin_menu', 'edu_connect_admin_menu' );
 add_action( 'wp_ajax_edu_connect_showlink', 'edu_connect_admin_ajax_showlink' );
 //add_action( 'admin_notices', 'edu_connect_admin_notice' );
 
-//Define Consants
+// Define Constants
+// ============================================
+
+//Define Environment if not defined
+if(!defined('EDU_CONNECT_ENV')) {
+    define('EDU_CONNECT_ENV', 'production');
+}
 define('EDU_PLUGIN_PATH', WP_CONTENT_DIR.'/plugins/'.plugin_basename(dirname(__FILE__)));
 define('EDU_PLUGIN_URL',  WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)));
 define('EDU_DIVISION', 'education');
 
 //Define constants based on environment
-if(edu_connect_env() == 'development') {
+if(EDU_CONNECT_ENV == 'development') {
     define('EDU_CONNECT_SERVICE_URL','http://11.0.0.1:9001');
 }
-elseif (edu_connect_env() == 'staging') {
+elseif (EDU_CONNECT_ENV == 'staging') {
     define('EDU_CONNECT_SERVICE_URL','http://staging.dell.system-11.com');
 }
 else {
@@ -107,7 +115,6 @@ class Edu_Connect_Widget extends WP_Widget {
         $widget_ops['count_items'] = self::EDU_CONNECT_MAX_SHOWN_ITEMS;
 
         $this->WP_Widget('dell-edu-connect', __('Dell Edu Connect'), $widget_ops);
-
     }
     /**
      * For function displays the form
@@ -184,7 +191,7 @@ class Edu_Connect_Widget extends WP_Widget {
         </div>
         <script>
             var _dec = _dec || [];
-            <?php if(edu_connect_env() == 'development' || edu_connect_env() == 'staging'):?>
+            <?php if(EDU_CONNECT_ENV == 'development' || EDU_CONNECT_ENV == 'staging'):?>
             _dec.push(['enableDebug']);
             <?php endif; ?>
             _dec.push(['setBaseUrl', '<?php echo EDU_CONNECT_SERVICE_URL ?>']);
@@ -201,16 +208,14 @@ class Edu_Connect_Widget extends WP_Widget {
 
 function edu_connect_scripts() {
     if (!is_admin()) {
-        // if(edu_connect_env() == 'development'){
-        //     wp_enqueue_script( $handle = 'edu_connect_ender', $src = 'http://localhost:8080/javascripts/ender.js', array(), $ver = 1, $in_footer = false );
-        //     wp_enqueue_script( $handle = 'edu_connect_js', $src = 'http://localhost:8080/javascripts/dell.js', array(), $ver = 1, $in_footer = false );
-
-        // }
-        // else {
+        if(EDU_CONNECT_ENV == 'production') {
             wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.min.js', array(), $ver = 1, $in_footer = false );
+            wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.min.js', array(), $ver = 1, $in_footer = false );
+        }
+         else {
+            wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
             wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
-        //}
-
+        }
     }
 }
 
@@ -218,13 +223,6 @@ function edu_connect_styles() {
     if (!is_admin()) {
         wp_enqueue_style( $handle = 'edu_connect_css', $src = WP_PLUGIN_URL . '/edu-connect/assets/css/styles.css', array(), $ver = 1 );
     }
-}
-
-function edu_connect_env() {
-     if(!defined('EDU_CONNECT_ENV')) {
-        define('EDU_CONNECT_ENV', 'production');
-    }
-    return EDU_CONNECT_ENV;
 }
 
 function edu_connect_admin_notice() {
@@ -248,8 +246,17 @@ function edu_connect_admin_scripts() {
     wp_enqueue_style( $handle = 'edu_connect_admin_css', $src = WP_PLUGIN_URL . '/edu-connect/assets/css/admin-styles.css', array(), $ver = 1 );
     wp_enqueue_script( 'jquery-ui-core' );
     wp_enqueue_script( 'jquery-ui-tabs' );
-    wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.min.js', array(), $ver = 1, $in_footer = false ); 
-    wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
+    wp_enqueue_script( $handle = 'edu_connect_plugins', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/plugins.js', array(), $ver = 1, $in_footer = false );
+    
+    if(EDU_CONNECT_ENV == 'production') {
+        wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.min.js', array(), $ver = 1, $in_footer = false );
+        wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.min.js', array(), $ver = 1, $in_footer = false );
+    }
+    else {
+        wp_enqueue_script( $handle = 'edu_connect_ender', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/ender.js', array(), $ver = 1, $in_footer = false );
+        wp_enqueue_script( $handle = 'edu_connect_js', $src = WP_PLUGIN_URL . '/edu-connect/assets/js/dell.js', array(), $ver = 1, $in_footer = false );
+    }
+   
 }
 
 function edu_connect_admin_page() {
@@ -279,7 +286,7 @@ function edu_connect_admin_page() {
         </div>
         <script>
             var _dec = _dec || [];
-            <?php if(edu_connect_env() == 'development' || edu_connect_env() == 'staging'):?>
+            <?php if(EDU_CONNECT_ENV == 'development' || EDU_CONNECT_ENV == 'staging'):?>
             _dec.push(['enableDebug']);
             <?php endif; ?>
             _dec.push(['setBaseUrl', '<?php echo EDU_CONNECT_SERVICE_URL ?>']);
@@ -290,8 +297,13 @@ function edu_connect_admin_page() {
     </div>
     <div id="tab2">
         <?php $showLink = get_option('edu_connect_showlink'); ?>
-        <h3>More Options</h3>
-        <button id="edu_connect_btn_blogroll" class="button" onclick="_dec.push(['addBlogRoll']);">Sync Blogroll</button> This adds all the sites in your blogroll to the edu connect widget. You can remove these blogs in the custom section of the blog selection tab.
+        <h3>User Blogs</h3>
+        <div>
+            <label for="edu_connect_text_addblog">Add a custom url to your own feed here</label></br>
+            <input type="text" placeholder="Enter URL Here" id="edu_connect_text_addblog" /><button class="button" id="edu_connect_btn_addblog" onclick="_dec.push(['addBlog', $('edu_connect_text_addblog').val()]);">Submit</button>
+        </div>
+        <h3>Blog Roll Sync</h3>
+        <button id="edu_connect_btn_blogroll" class="button" onclick="_dec.push(['addBlogRoll']);">Sync Blogroll</button> This adds all the sites from your blogroll to the edu connect widget. You can remove these blogs in the custom section of the blog selection tab.
         <script>
             _dec.push(['setBlogRoll', <?php echo JSON_encode($urlArray); ?>]);
         </script>
