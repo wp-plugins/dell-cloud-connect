@@ -67,7 +67,7 @@ function edu_connect_install() {
     $settings = json_decode($settings);
 
     if(!$settings->result) {
-        @file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/add?url=' . urlencode(home_url()) . '&error=' . urlencode($settings->error));
+        file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/error?url=' . urlencode(home_url()) . '&error=' . urlencode($settings->error));
         die("Sorry, there was a problem activating your blog. Please contact support+dell@system-11.com");
     }
     else {
