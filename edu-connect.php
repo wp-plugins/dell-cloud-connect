@@ -87,7 +87,7 @@ function edu_connect_install() {
 
 function edu_connect_uninstall() {
     $clientId = get_option('edu_connect_clientid', null);
-    $settings = file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/deactivate?clientid=' . $clientId;
+    $settings = file_get_contents(EDU_CONNECT_SERVICE_URL . '/client/deactivate?clientid=' . $clientId);
     $settings = json_decode($settings);
 }
 
