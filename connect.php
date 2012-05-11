@@ -83,7 +83,7 @@ function dell_connect_uninstall() {
  */
 class Edu_Connect_Widget extends WP_Widget {
 
-    const EDU_CONNECT_TITLE = "The Latest From Cloud Computing";
+    const EDU_CONNECT_TITLE = DELL_CONNECT_WIDGET_TITLE;
     const EDU_CONNECT_DATEFORMAT = 'M/d/Y';
     const EDU_CONNECT_MAX_SHOWN_ITEMS = 6;
 
@@ -101,7 +101,7 @@ class Edu_Connect_Widget extends WP_Widget {
         $widget_ops['dateformat'] = self::EDU_CONNECT_DATEFORMAT;
         $widget_ops['count_items'] = self::EDU_CONNECT_MAX_SHOWN_ITEMS;
 
-        $this->WP_Widget('dell-edu-connect', __('Dell Cloud Connect'), $widget_ops);
+        $this->WP_Widget('dell-edu-connect', __(DELL_CONNECT_PLUGIN_NAME), $widget_ops);
     }
     /**
      * For function displays the form
@@ -208,7 +208,7 @@ function dell_connect_scripts() {
 
 function dell_connect_styles() {
     if (!is_admin()) {
-        wp_enqueue_style( $handle = 'edu_connect_css', $src = DELL_CONNECT_PLUGIN_URL . '/edu-connect/assets/css/styles.css', array(), $ver = 1 );
+        wp_enqueue_style( $handle = 'edu_connect_css', $src = DELL_CONNECT_PLUGIN_URL . '/assets/css/styles.css', array(), $ver = 1 );
     }
 }
 
@@ -223,7 +223,7 @@ function edu_connect_admin_notice() {
 function dell_connect_admin_menu() {
     //add_menu_page( 'Dell Services', 'Dell Services', 'manage_options', 'dell-services', null, WP_PLUGIN_URL . '/edu-connect/assets/img/dellecomicon.png', null );
     //$dell_news_page = add_submenu_page( 'dell-services', 'News', 'News', 'manage_options', 'dell-news', 'dell_admin_page' );
-    $edu_connect_page = add_options_page('<?php echo DELL_CONNECT_PLUGIN_NAME ?>', '<?php echo DELL_CONNECT_PLUGIN_NAME ?>', 'manage_options', 'edu-connect', 'edu_connect_admin_page' );
+    $edu_connect_page = add_options_page(DELL_CONNECT_PLUGIN_NAME, DELL_CONNECT_PLUGIN_NAME, 'manage_options', 'edu-connect', 'edu_connect_admin_page' );
     remove_submenu_page( 'dell-services', 'dell-services' );
 
     add_action('admin_print_styles-' . $edu_connect_page, 'edu_connect_admin_scripts');
