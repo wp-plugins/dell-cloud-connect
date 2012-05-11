@@ -75,6 +75,9 @@ $.noConflict();
       case 'addBlog':
         fn = addBlog;
         break;
+      case 'removeBlog':
+        fn = removeBlog;
+        break;
     }
     if (typeof fn === 'function') {
       fn.apply(object, fnArray);
@@ -98,7 +101,7 @@ $.noConflict();
       log(resp);
       for(var i=0; i<count && i<blogs.length; i++) {
         if('undefined' != typeof blogs[i].currentArticle) {
-          output += '<li><strong><a target="_blank" rel="nofollow" href="' + blogs[i].currentArticle['link'] + '">' + blogs[i].currentArticle.title + '</a></strong><br>';
+          output += '<li><strong><a target="_blank" rel="nofollow" href="' + baseUrl + '/click?url=' + encodeURIComponent(blogs[i].currentArticle['link']) + '">' + blogs[i].currentArticle.title + '</a></strong><br>';
           if(showDescriptions) {
             output += '<span class="dec-description">' + blogs[i].currentArticle.description + '</span><br>';
           }
@@ -146,9 +149,9 @@ $.noConflict();
             url = '';
           }
 
-          output += '<li style="clear:both;"><p style="float:left;margin-right:10px;">';
+          output += '<li id="blog_' + categories[category][i]._id + '" style="clear:both;"><p style="float:left;margin-right:10px;">';
           if(category == "User Added") {
-            output += '<a href="" onclick="javascript:var remblog=confirm(\'Are you sure you want to remove this blog from the list?\'); if(remblog) { alert(\'removed\')}"><i class="icon-remove"></i></a>';
+            output += '<a href="" onclick="javascript:var remblog=confirm(\'Are you sure you want to remove this blog from your list?\'); if(remblog) { _dec.push([\'removeBlog\',\'' + categories[category][i]._id + '\']); return false;}"><i class="icon-remove"></i></a>';
           }
           else {
             output += '<input onclick="_dec.push([\'setBlogStatus\',\'' + categories[category][i]._id + '\']);" type="checkbox" name="blog" id="' + categories[category][i]._id + '" value="' + categories[category][i]._id + '"';
@@ -202,6 +205,33 @@ $.noConflict();
     });
   }
 
+  function addBlog() {
+    $('.dbn_error').hide();
+    $('#edu_connect_btn_addblog').attr('disabled', true);
+    var url = $('#edu_connect_text_addblog').val();
+    var data = { clientId: clientId, division: division, url: url }
+    log(['Adding Bolg: ', data]);
+    ajax('client/addblog',data, function(resp){
+      log(['Blog Add Response', resp]);
+      if(resp.error) {
+        $('.dbn_error').text('Error adding blog: ' + resp.error).show();
+        $('#edu_connect_btn_addblog').removeAttr('disabled');
+      }
+      else {
+        win.location.reload(true);
+      }
+    });
+  }
+
+  function removeBlog(blogId) {
+    var data = { clientId: clientId, blogId: blogId };
+    log(["Removing blog for client", blogId, data]);
+    ajax('blog/remove',data, function(resp){
+      log(['Blog Remove Response', resp]);
+      $('#blog_' + blogId).hide();
+    });
+  }
+
   function setBlogRoll(newBlogRoll) {
     log(['Setting blog roll', newBlogRoll]);
     blogRoll = newBlogRoll;
@@ -220,15 +250,6 @@ $.noConflict();
     else {
       log('No Blog Roll Set...');
     } 
-  }
-
-  function addBlog() {
-    var data = { clientId: clientId, division: division, url:$('#edu_connect_text_addblog').val()}
-    log(['Adding Bolg: ', data]);
-    ajax('client/addblog',data, function(resp){
-      log(['Blog Add Response', resp]);
-      win.location.reload(true);
-    });
   }
 
   function setBaseUrl(newUrl) {
