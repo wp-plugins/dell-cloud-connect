@@ -145,7 +145,7 @@ $.noConflict();
 
           output += '<li style="clear:both;"><p style="float:left;margin-right:10px;">';
           if(category == "User Added") {
-
+            output += '<a href="" onclick="javascript:var remblog=confirm(\'Are you sure you want to remove this blog from the list?\'); if(remblog) { alert(\'removed\')}"><i class="icon-remove"></i></a>';
           }
           else {
             output += '<input onclick="_dec.push([\'setBlogStatus\',\'' + categories[category][i]._id + '\']);" type="checkbox" name="blog" id="' + categories[category][i]._id + '" value="' + categories[category][i]._id + '"';
