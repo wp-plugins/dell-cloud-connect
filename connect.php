@@ -53,7 +53,7 @@ function dell_connect_install() {
     }
 
     //Get option to see if it has already been installed
-    $clientId = get_option('edu_connect_clientid', null);
+    $clientId = get_option('dell_connect_clientid', null);
         
     //Set global default option
     $settings = file_get_contents(DELL_CONNECT_SERVICE_URL . '/client/add?division=' . DELL_CONNECT_DIVISION .'&url=' . urlencode(home_url()) . '&ajaxurl=' . urlencode(DELL_CONNECT_PLUGIN_URL . '/ajax.php') . '&clientid=' . $clientId);
@@ -66,12 +66,12 @@ function dell_connect_install() {
     else {
         $clientId = $settings->data->id;
     }
-    update_option('edu_connect_clientid', $clientId);
+    update_option('dell_connect_clientid', $clientId);
     update_option('edu_connect_showlink', true);
 }
 
 function dell_connect_uninstall() {
-    $clientId = get_option('edu_connect_clientid', null);
+    $clientId = get_option('dell_connect_clientid', null);
     $settings = file_get_contents(DELL_CONNECT_SERVICE_URL . '/client/deactivate?clientid=' . $clientId);
     $settings = json_decode($settings);
 }
@@ -169,7 +169,7 @@ class Edu_Connect_Widget extends WP_Widget {
         $title = apply_filters('widget_title', $instance['title']);
         $count_items = $instance['count_items'];
         $show_descriptions = $instance['show_descriptions'];
-        $clientId = get_option('edu_connect_clientid', null);
+        $clientId = get_option('dell_connect_clientid', null);
         ?>
         <?php echo $before_widget; ?>
         <?php if($title) echo $before_title . $title . $after_title; ?>
@@ -182,7 +182,7 @@ class Edu_Connect_Widget extends WP_Widget {
             _dec.push(['enableDebug']);
             <?php endif; ?>
             _dec.push(['setBaseUrl', '<?php echo DELL_CONNECT_SERVICE_URL ?>']);
-            _dec.push(['setClientId', '<?php echo get_option("edu_connect_clientid")?>']);
+            _dec.push(['setClientId', '<?php echo get_option("dell_connect_clientid")?>']);
             _dec.push(['setDivision', '<?php echo DELL_CONNECT_DIVISION ?>']);
             _dec.push(['getFeed',<?php echo (int)$count_items; ?>,<?php echo (($show_descriptions)?'true':'false'); ?>]);
         </script>
@@ -277,7 +277,7 @@ function edu_connect_admin_page() {
             _dec.push(['enableDebug']);
             <?php endif; ?>
             _dec.push(['setBaseUrl', '<?php echo DELL_CONNECT_SERVICE_URL ?>']);
-            _dec.push(['setClientId', '<?php echo get_option("edu_connect_clientid")?>']);
+            _dec.push(['setClientId', '<?php echo get_option("dell_connect_clientid")?>']);
             _dec.push(['setDivision', '<?php echo DELL_CONNECT_DIVISION ?>']);
             _dec.push(['getBlogList']);
         </script>
