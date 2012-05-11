@@ -1,11 +1,11 @@
 === Dell Cloud Connect ===
 Contributors: clintonb11
-Tags: education
+Tags: cloud, cloud computing
 Requires at least: 3.0
 Tested up to: 3.3
 Stable tag: 0.2.0
 
-Cloud Connect is a widget/plugin that helps connect cloud blogs around the World.
+Cloud Connect is a widget/plugin that helps connect cloud computing blogs around the World.
 
 == Description ==
 
