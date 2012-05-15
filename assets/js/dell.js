@@ -173,7 +173,7 @@ $.noConflict();
       if(client.backlinkActive == 1){
          output += ' checked ';
       }
-      output += '/></p><p><strong>Show Sponsor Link</strong><br />Please help support the development of this plugin by keeping this checked.</p></div>';
+      output += '/></p><p><strong>Show Sponsor Link</strong><br />Please help support the development of this plugin by checking this box.</p></div>';
       output += '<button class="button" onclick="_dec.push([\'updateFeed\']);">Save Settings</button>';
       $('#dec_blogs').html(output);
     });

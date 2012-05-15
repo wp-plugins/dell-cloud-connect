@@ -21,9 +21,6 @@ if(!defined('DELL_CONNECT_ENV')) {
     define('DELL_CONNECT_ENV', 'production');
 }
 
-define('DELL_CONNECT_PLUGIN_URL',  WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__)));
-
-
 //Define constants based on environment
 if(DELL_CONNECT_ENV == 'development') {
     define('DELL_CONNECT_SERVICE_URL','http://11.0.0.1:9001');
@@ -35,6 +32,11 @@ else {
     define('DELL_CONNECT_SERVICE_URL','http://dell.system-11.com');
 }
 
+//Check to see if a client ID already exists, if not, install the widget
+$clientId = get_option('dell_connect_clientid', null);
+if($clientId === null) {
+    dell_connect_install();
+}
 /**
  * Register the widget
  */
@@ -42,11 +44,11 @@ function dell_connect_load_widgets() {
     register_widget( 'Edu_Connect_Widget' );
 }
 
+
 /**
  * Plugin Install/Activation Script
  */
 function dell_connect_install() {
-
     //Check to make sure PHP config supports urls in file_get_contents
     if(!function_exists('file_get_contents') || ini_get('allow_url_fopen') == 0){
         die('Sorry, this plugin requires file_get_contents to grab a URL.');
@@ -67,7 +69,7 @@ function dell_connect_install() {
         $clientId = $settings->data->id;
     }
     update_option('dell_connect_clientid', $clientId);
-    update_option('edu_connect_showlink', true);
+    update_option('edu_connect_showlink', false);
 }
 
 function dell_connect_uninstall() {
@@ -97,7 +99,7 @@ class Edu_Connect_Widget extends WP_Widget {
         $widget_ops = array();
         $widget_ops['title' ] = self::EDU_CONNECT_TITLE;
         $widget_ops['url' ] = $this->url;
-        $widget_ops['showsponsoredlink'] = true;
+        $widget_ops['showsponsoredlink'] = false;
         $widget_ops['dateformat'] = self::EDU_CONNECT_DATEFORMAT;
         $widget_ops['count_items'] = self::EDU_CONNECT_MAX_SHOWN_ITEMS;
 
@@ -112,7 +114,7 @@ class Edu_Connect_Widget extends WP_Widget {
         $widget_ops = array();
         $widget_ops['title' ] = 'The latest from EDU';
         $widget_ops['url' ] = $this->url;
-        $widget_ops['showsponsoredlink'] = true;
+        $widget_ops['showsponsoredlink'] = false;
         $widget_ops['dateformat'] = self::EDU_CONNECT_DATEFORMAT;
         $widget_ops['count_items'] = self::EDU_CONNECT_MAX_SHOWN_ITEMS;
         $widget_ops['show_descriptions'] = true;
