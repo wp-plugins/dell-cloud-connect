@@ -112,7 +112,7 @@ class Edu_Connect_Widget extends WP_Widget {
     function form($instance) {
 
         $widget_ops = array();
-        $widget_ops['title' ] = 'The latest from EDU';
+        $widget_ops['title' ] = DELL_CONNECT_WIDGET_TITLE;
         $widget_ops['url' ] = $this->url;
         $widget_ops['showsponsoredlink'] = false;
         $widget_ops['dateformat'] = self::EDU_CONNECT_DATEFORMAT;
