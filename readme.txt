@@ -3,7 +3,7 @@ Contributors: clintonb11
 Tags: cloud, cloud computing
 Requires at least: 3.0
 Tested up to: 3.3
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 
 Cloud Connect is a widget/plugin that helps connect cloud computing blogs around the World.
 
@@ -45,6 +45,10 @@ No, we use asyncronous javascript to load the article list from our servers, so 
 
 
 == Changelog ==
+
+= 0.2.2 =
+* Style Updates
+* Fixed upgrade bug
 
 = 0.2.1 =
 * Updated JavaScript file 

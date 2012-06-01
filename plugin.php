@@ -3,7 +3,7 @@
 Plugin Name: Dell Cloud Connect
 Plugin URI: http://marketing.dell.com/cloudcomputing-widget
 Description: Adds a widget to display the latest news and information from the most influential cloud computing blogs.
-Version: 0.2.1
+Version: 0.2.2
 Author: Dell
 Author URI: http://www.dell.com
 
