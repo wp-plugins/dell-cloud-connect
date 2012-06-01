@@ -9,17 +9,11 @@ Cloud Connect is a widget/plugin that helps connect cloud computing blogs around
 
 == Description ==
 
-Cloud Connect is a widget/plugin that helps connect cloud computing blogs around the World. The widget is a
-content aggregator for cloud computing blog articles. The aggregator takes content from the highest quality
-cloud computing blogs and presents the titles and a brief summary within the widget.
+Cloud Connect is a widget/plugin that helps connect cloud computing blogs around the World. The widget is a content aggregator for cloud computing blog articles. The aggregator takes content from the highest quality cloud computing blogs and presents the titles and a brief summary within the widget.
 
-The widget has a special crawler that goes to a pre-set list of cloud computing blogs that are selected based on
-content quality. It then takes the title of the latest articles written by that blog and populates the widget
-sitting on the installer's website. Articles within the widget are then ranked based on a variety of social media
-factors to present only the best freshest articles.
+The widget has a special crawler that goes to a pre-set list of cloud computing blogs that are selected based on content quality. It then takes the title of the latest articles written by that blog and populates the widget sitting on the installer's website. Articles within the widget are then ranked based on a variety of social media factors to present only the best freshest articles.
 
-The goal of the Cloud Connect widget it to help users and publishers to discover new content and readers. Our hope is
-to help technologists discover new cloud technology along with connect with other industry leaders to share best practices.
+The goal of the Cloud Connect widget it to help users and publishers to discover new content and readers. Our hope is to help technologists discover new cloud technology along with connect with other industry leaders to share best practices.
 
 For more information, see http://marketing.dell.com/cloudconnect-widget
 
