@@ -44,6 +44,25 @@ function dell_connect_load_widgets() {
     register_widget( 'Edu_Connect_Widget' );
 }
 
+/**
+ * Check client id to make sure it exists
+ */
+function dell_connect_check_install() {
+    if(!function_exists('file_get_contents') || ini_get('allow_url_fopen') == 0){
+        die('Sorry, this plugin requires file_get_contents to grab a URL.');
+    }
+    //Get option to see if it has already been installed
+    $clientId = get_option('dell_connect_clientid', null);
+        
+    //Set global default option
+    $settings = file_get_contents(DELL_CONNECT_SERVICE_URL . '/client/check?clientid=' . $clientId);
+    $settings = json_decode($settings);
+
+    if($settings->error == "Client Not Found") {
+        dell_connect_install();
+    }
+
+}
 
 /**
  * Plugin Install/Activation Script
@@ -254,6 +273,8 @@ function edu_connect_admin_page() {
     foreach($blogRoll as $blog) {
         $urlArray[] = $blog->link_url;
     }
+    //Check to make sure it installed okay...
+    dell_connect_check_install()
 ?>
 <div class="wrap">
 <div id="icon-options-general" class="icon32"><br></div>

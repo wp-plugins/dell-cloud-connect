@@ -132,6 +132,7 @@ $.noConflict();
       var categories = resp.data.categories;
       var output = '';
       for(category in categories) {
+        output += '<div class="dbn-category">';
         output += '<h3>' + category + '</h3>';
         output += '<ul>';
         for(var i=0; i<categories[category].length; i++){
@@ -167,7 +168,9 @@ $.noConflict();
           output += '</p><p><strong>' + title + '</strong> - ' + description + '<br />' + url + '</p></li>';
         }
         output += '</ul>';
+        output += '</div>';
       }
+      output += '<div style="clear:both"></div>';
       output += '<div><p style="float:left;margin-right:10px;">';
       output += '<input onclick="_dec.push([\'setBacklinkActive\']);" type="checkbox" id="dec_backlink_active" name="backlinkstatus" value="active"';
       if(client.backlinkActive == 1){

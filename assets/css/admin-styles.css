@@ -3,6 +3,8 @@
 .nav-tab-wrapper li.ui-tabs-selected { border-bottom:1px solid white;  }
 .nav-tab-wrapper li a { margin:0; }
 
+.dbn-category { width:375px; float:left; }
+
 .dbn_error { color:#990000; border:1px solid #990000; padding:10px; border-radius:5px; margin:10px 0; background-color:#FFEFEF; }
 
 [class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;line-height:14px;vertical-align:text-top;background-image:url("../img/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;*margin-right:.3em;}[class^="icon-"]:last-child,[class*=" icon-"]:last-child{*margin-left:0;}
