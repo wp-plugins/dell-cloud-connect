@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: <%= pluginName %>
-Plugin URI: <%= url %>
+Plugin Name: Dell Cloud Connect
+Plugin URI: http://marketing.dell.com/healthcare-widget
 Description: Adds a widget to display the latest news and information from the most influential healthcare blogs.
-Version: <%= version %>
+Version: 0.2.3
 Author: Dell
 Author URI: http://www.dell.com
 
@@ -15,10 +15,10 @@ Installing
 */
 
 
-define('DELL_CONNECT_DIVISION', '<%= slug %>');
-define('DELL_CONNECT_PLUGIN_NAME', '<%= pluginName %>');
-define('DELL_CONNECT_SETTINGS_MENU_TITLE', '<%= menuTitle %>');
-define('DELL_CONNECT_WIDGET_TITLE', '<%= widgetTitle %>');
+define('DELL_CONNECT_DIVISION', 'cloudcomputing');
+define('DELL_CONNECT_PLUGIN_NAME', 'Dell Cloud Connect');
+define('DELL_CONNECT_SETTINGS_MENU_TITLE', 'Cloud Connect Settings');
+define('DELL_CONNECT_WIDGET_TITLE', 'The latest from Cloud Computing');
 
 define('DELL_CONNECT_PLUGIN_URL',  WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)));
 define('DELL_CONNECT_PLUGIN_PATH', WP_CONTENT_DIR.'/plugins/'.plugin_basename(dirname(__FILE__)));
